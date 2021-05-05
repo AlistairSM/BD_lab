@@ -1,0 +1,119 @@
+Hadoop Basic Commands 
+
+1. Create a directory named by your name.
+hdoop@ubuntu:~$ hadoop fs -mkdir alistair/
+hdoop@ubuntu:~$ hadoop fs -ls
+Found 1 items
+drwxr-xr-x   - hdoop supergroup          0 2021-05-04 18:44 alistair
+
+
+2. Add two empty files into it.
+hdoop@ubuntu:~$ hadoop fs -touchz /alistair/file1.txt
+hdoop@ubuntu:~$ hadoop fs -touchz /alistair/file2.txt
+
+3. List all the files in the directory that you have created.
+hdoop@ubuntu:~$ hadoop fs -ls /alistair
+Found 2 items
+-rw-r--r--   1 hdoop supergroup          0 2021-05-04 18:46 /alistair/file1.txt
+-rw-r--r--   1 hdoop supergroup          0 2021-05-04 18:47 /alistair/file2.txt
+
+4. Create one more directory with your usnand move it inside your previously created directory with your name.
+hdoop@ubuntu:~$ hadoop fs -mkdir /1nt18is024
+hdoop@ubuntu:~$ hadoop fs -mv /1nt18is024 /alistair
+hdoop@ubuntu:~$ hadoop fs -ls /alistair
+Found 3 items
+drwxr-xr-x   - hdoop supergroup          0 2021-05-04 18:51 /alistair/1nt18is024
+-rw-r--r--   1 hdoop supergroup          0 2021-05-04 18:46 /alistair/file1.txt
+-rw-r--r--   1 hdoop supergroup          0 2021-05-04 18:47 /alistair/file2.txt
+
+5. Create a file in your local system by name_usn.txt and add the contents as "Syntax to list ls command is hadoop fs -ls".
+hdoop@ubuntu:~$ nano alistair_1nt18is024.txt
+
+6. Put the file name_usn.txt in your hdfs directory named by your usn.
+hdoop@ubuntu:~$ hadoop fs -moveFromLocal alistair_1nt18is024.txt /alistair/1nt18is024/alistair_1nt18is024.txt
+hdoop@ubuntu:~$ hadoop fs -ls /alistair/1nt18is024
+Found 1 items
+-rw-r--r--   1 hdoop supergroup         43 2021-05-04 18:57 /alistair/1nt18is024/alistair_1nt18is024.txt
+
+7. Put empty file from hdfs to local file system.
+hdoop@ubuntu:~$ hadoop fs -touchz empty.txt
+hdoop@ubuntu:~$ hadoop fs -ls
+Found 2 items
+drwxr-xr-x   - hdoop supergroup          0 2021-05-04 18:44 alistair
+-rw-r--r--   1 hdoop supergroup          0 2021-05-04 18:59 empty.txt
+
+hdoop@ubuntu:~$ hadoop fs -copyToLocal empty.txt/ /home/hdoop/empty.txt
+hdoop@ubuntu:~$ ls
+apache-hive-3.1.2-bin  eclipse-workspace    hs_err_pid29299.log  Public
+Desktop                empty.txt            hs_err_pid29507.log  snap
+dfsdata                examples.desktop     hs_err_pid32715.log  Templates
+Documents              hadoop-3.2.1         Music                tmpdata
+Downloads              hs_err_pid21913.log  Pictures             Videos
+
+
+8. Use mv command to move files from local file system and hdfs file system.
+hdoop@ubuntu:~$ hadoop fs -ls
+Found 3 items
+drwxr-xr-x   - hdoop supergroup          0 2021-05-04 18:50 1nt18is024
+drwxr-xr-x   - hdoop supergroup          0 2021-05-04 18:44 alistair
+-rw-r--r--   1 hdoop supergroup          0 2021-05-04 18:59 empty.txt
+
+hdoop@ubuntu:~$  hadoop fs -ls /alistair
+Found 3 items
+drwxr-xr-x   - hdoop supergroup          0 2021-05-04 18:57 /alistair/1nt18is024
+-rw-r--r--   1 hdoop supergroup          0 2021-05-04 18:46 /alistair/file1.txt
+-rw-r--r--   1 hdoop supergroup          0 2021-05-04 18:47 /alistair/file2.txt
+
+hdoop@ubuntu:~$ hadoop fs -mv empty.txt /alistair 
+hdoop@ubuntu:~$ hadoop fs -ls
+Found 2 items
+drwxr-xr-x   - hdoop supergroup          0 2021-05-04 18:50 1nt18is024
+drwxr-xr-x   - hdoop supergroup          0 2021-05-04 18:44 alistair
+hdoop@ubuntu:~$ hadoop fs -ls /alistair
+Found 4 items
+drwxr-xr-x   - hdoop supergroup          0 2021-05-04 18:57 /alistair/1nt18is024
+-rw-r--r--   1 hdoop supergroup          0 2021-05-04 18:59 /alistair/empty.txt
+-rw-r--r--   1 hdoop supergroup          0 2021-05-04 18:46 /alistair/file1.txt
+-rw-r--r--   1 hdoop supergroup          0 2021-05-04 18:47 /alistair/file2.txt
+
+9. Experimnet of cp command
+hdoop@ubuntu:~$ hadoop fs -ls /alistair/1nt18is024
+Found 1 items
+-rw-r--r--   1 hdoop supergroup         43 2021-05-04 18:57 /alistair/1nt18is024/alistair_1nt18is024.txt
+hdoop@ubuntu:~$ hadoop fs -cp /alistair/1nt18is024/alistair_1nt18is024.txt /alistair/new.txt
+
+hdoop@ubuntu:~$ hadoop fs -ls /alistair/1nt18is024
+Found 1 items
+-rw-r--r--   1 hdoop supergroup         43 2021-05-04 18:57 /alistair/1nt18is024/alistair_1nt18is024.txt
+hdoop@ubuntu:~$ hadoop fs -ls /alistair
+Found 5 items
+drwxr-xr-x   - hdoop supergroup          0 2021-05-04 18:57 /alistair/1nt18is024
+-rw-r--r--   1 hdoop supergroup          0 2021-05-04 18:59 /alistair/empty.txt
+-rw-r--r--   1 hdoop supergroup          0 2021-05-04 18:46 /alistair/file1.txt
+-rw-r--r--   1 hdoop supergroup          0 2021-05-04 18:47 /alistair/file2.txt
+-rw-r--r--   1 hdoop supergroup         43 2021-05-04 19:29 /alistair/new.txt
+hdoop@ubuntu:~$ hadoop fs -cat /alistair/new.txt
+Syntax to list ls command is hadoop fs -ls
+
+10. Display the total size of all the files in name directory.
+hdoop@ubuntu:~$ hadoop fs -du -s /alistair
+86  86  /alistair
+
+11. Display each file size in usn directory
+hdoop@ubuntu:~$ hadoop fs -du /alistair/1nt18is024
+43  43  /alistair/1nt18is024/alistair_1nt18is024.txt
+
+12. Use stat command on name and usn directories.
+hdoop@ubuntu:~$ hadoop fs -stat /alistair
+2021-05-05 02:29:03
+hdoop@ubuntu:~$ hadoop fs -stat /alistair/1nt18is024
+2021-05-05 01:57:18
+
+13. Illustrate the use of append command.
+hdoop@ubuntu:~$  hadoop fs -cat first.txt
+how are
+hdoop@ubuntu:~$  hadoop fs -cat second.txt
+you?
+hdoop@ubuntu:~$ hadoop fs -appendToFile first.txt second.txt final.txt
+hdoop@ubuntu:~$ hadoop fs final.txt
+how are you?
